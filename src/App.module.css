@@ -1,38 +1,48 @@
-.App {
-  text-align: center;
+
+
+
+.App_Wrapper_Content {
+  background-color: black;
+ height: 100vh;
+  grid-area: c;
+  
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App_Wrapper_wrap{
+  display: grid;
+  padding: 10px 0;
+  grid-template:
+    [header-left] 'h' auto [header-right]
+    [main-left] 'c' 300% [main-right]
+    [footer-left] 'f' auto [footer-right]
+    / 100% ;
+
+  background: url('../src/img/magic-aces.jpg');
+  background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+main {
+
+  grid-area: main;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

@@ -3,7 +3,7 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 
 import MessageforTable from "./SendMessageTable";
-import {addMessageForTableName, addMessageTableThunk} from "../Reducer/messagetable-reducer";
+import {addMessageForTableName, addMessageTableThunk} from "../../Reducer/messagetable-reducer";
 
 
 

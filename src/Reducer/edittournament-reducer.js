@@ -1,9 +1,12 @@
-import {addTableApiGames, editTableApiGames} from "../API/Api";
+import {editTurnaments, getOneTournaments} from "../API/Api";
+import {eddTablThunk} from "./edittable-reducer";
 
 
-const EDIT_TABLE = "EDIT_TABLE";
-const EDIT_TABLE_RESULT_OK = "EDIT_TABLE_RESULT_OK";
-const NAME_OK = "NAME_OK";
+const EDIT_TOURNAMENT = "EDIT_TOURNAMENT";
+const EDIT_TOURNAMENTS_RESULT_OK = "EDIT_TOURNAMENTS_RESULT_OK";
+const NAME_OK_TOURNAMENTS = "NAME_OK_TOURNAMENTS";
+const EDIT_TOURNAMENTS_RESULT_OK_NULL = "EDIT_TOURNAMENTS_RESULT_OK_NULL";
+
 
 let initialization = {
     Error: '',
@@ -12,15 +15,16 @@ let initialization = {
 
 };
 
-let EditTableReducer = (state = initialization, action) => {
+let EditTournamentsReducer = (state = initialization, action) => {
     switch (action.type) {
-        case EDIT_TABLE:
+        case EDIT_TOURNAMENT:
             return {
                 ...state,
                 Error: action.result
             };
 
-        case NAME_OK:
+
+        case NAME_OK_TOURNAMENTS:
             return {
 
                 ...state,
@@ -28,34 +32,57 @@ let EditTableReducer = (state = initialization, action) => {
 
             };
 
-        case EDIT_TABLE_RESULT_OK:
+        case EDIT_TOURNAMENTS_RESULT_OK:
+            return {
+
+                ...state,
+                Result: action.result
+            };
+        case EDIT_TOURNAMENTS_RESULT_OK_NULL:
             return {
 
                 ...state,
                 Result: action.result
             };
 
+
+
+
         default:
             return state;
     }
 }
 
-export let editTableForGames = (result) => ({type: EDIT_TABLE,  result});
-export let editTableForGamesResult = (result) => ({type: EDIT_TABLE_RESULT_OK,  result});
-export let eddTablThunk = (object) => ({type: NAME_OK, object});
+export let editTForGames = (result) => ({type: EDIT_TOURNAMENT,  result});
+export let editTForGamesResult = (result) => ({type: EDIT_TOURNAMENTS_RESULT_OK,  result});
+export let eddTournThunk = (object) => ({type: NAME_OK_TOURNAMENTS, object});
+export let editTForGamesResultNull = (result) => ({type: EDIT_TOURNAMENTS_RESULT_OK_NULL, result});
 
 
-export const editTableThunk = (args) =>
+
+export const editTournamentsThunk = (args) =>
     async (dispatch) => {
-
-        let response = await editTableApiGames.editTableForApi(args);
+        let response = await editTurnaments.editTurnamentsForApi(args);
         if (response.data.Result === "Error") {
-            dispatch(editTableForGames(response.data.Error));
-            dispatch(editTableForGamesResult(response.data.Result));
+            dispatch(editTForGames(response.data.Error));
+            dispatch(editTForGamesResult(response.data.Result));
         } else {
-            dispatch(editTableForGamesResult(response.data.Result));
-            dispatch(editTableForGames(''));
+            dispatch(editTForGamesResult(response.data.Result));
+            dispatch(editTForGames(''));
         }
     }
 
-export default EditTableReducer;
+
+
+export const getTournamentsOneThunk = (name) =>
+    async (dispatch) => {
+
+        let response = await getOneTournaments.getTournamentsOneApi(name);
+        if (response.status === 200) {
+            dispatch(eddTournThunk(response.data));
+
+        }
+    }
+
+
+export default EditTournamentsReducer;

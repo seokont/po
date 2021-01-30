@@ -1,17 +1,23 @@
 import React from "react";
-import {addTableThunk} from "../../Reducer/addtable-reducer";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import AddTable from "./NewRingGame";
 
-
-
+import {editTableForGamesResultNull, editTableThunk} from "../../Reducer/edittable-reducer";
+import EditTable from "./EditRingGame";
+import RedirectAfterGood from "../../Hoc/RedirectAfterGood";
+import AuthRedirectNoneToken from "./../../Hoc/AuthRedirectNoneToken";
 
 
 let mapStateToProps = (state) => ({
-adtablenew:state.Addtablereducer
+    EditMessag: state.EditMessag,
+    getgames: state.Getgamereducer.AllRingGames,
+    token: state.Token
+
 
 })
 
-let NewRingGameConteiner = compose(connect(mapStateToProps, {addTableThunk}))(AddTable);
-export default NewRingGameConteiner;
+let EditRingGameConteiner = compose(connect(mapStateToProps, {
+    editTableThunk,
+    editTableForGamesResultNull
+}), RedirectAfterGood,AuthRedirectNoneToken)(EditTable);
+export default EditRingGameConteiner;

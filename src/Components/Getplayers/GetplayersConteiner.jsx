@@ -2,15 +2,49 @@ import React from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import Getplayers from "./Getplayers";
-import {authPlayersThunk} from "../Reducer/getplayers-reducer";
+import {authPlayersThunk, authSessionThunk, getObj} from "../../Reducer/getplayers-reducer";
+import {eddPlayerThunk, editPlayerThunkByObject} from "../../Reducer/editplayer-reducer";
+import {addPlayerForGamesResult} from "../../Reducer/addplayer-reducer";
+import {deletePlayerThunk} from "../../Reducer/delplayer-reducer";
+import {resetRakeAllThunk, resetRakeUserThunk, resetResultRakeOk} from "../../Reducer/rsetrakeall-reducer";
+import {authPlayersIpThunk} from "../../Reducer/getplayersforip-reducer";
+import {addImageCountryThunk} from "../../Reducer/ipcountry-reducer";
+import {addPlayerTokenThunk} from "../../Reducer/auth-reducer";
+import {addTotalRakeThunk} from "../../Reducer/totalrake-reducer";
 
+
+import AuthRedirectNoneToken from "./../../Hoc/AuthRedirectNoneToken";
 
 
 let mapStateToProps = (state) => ({
     getplayers: state.GetPlayers.AllPlayers,
     resultgetplayers: state.GetPlayers.Result,
+    resultresetallrake: state.Resetrake.Result,
+    resultresetallrakeok: state.Resetrake.ResultOk,
+    resultBalance: state.Balance,
+    getplayersobj: state.GetPlayers.Obj,
+    getip:state.GetPlayersIp,
+    getimg:state.GetCountryIp,
+    token: state.Token,
+    totalrake:state.TotalRake.TotalRake
+
 
 })
 
-let GetplayersConteiner = compose(connect(mapStateToProps, {authPlayersThunk}))(Getplayers);
+let GetplayersConteiner = compose(connect(mapStateToProps, {
+    addPlayerTokenThunk,
+    addImageCountryThunk,
+    authPlayersIpThunk,
+    authSessionThunk,
+    getObj,
+    resetRakeUserThunk,
+    resetResultRakeOk,
+    authPlayersThunk,
+    eddPlayerThunk,
+    addPlayerForGamesResult,
+    deletePlayerThunk,
+    resetRakeAllThunk,
+    editPlayerThunkByObject,
+    addTotalRakeThunk
+}),AuthRedirectNoneToken)(Getplayers);
 export default GetplayersConteiner;

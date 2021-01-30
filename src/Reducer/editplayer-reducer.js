@@ -1,10 +1,10 @@
-import {addTableApiGames, editTableApiGames} from "../API/Api";
+import {editPlayer} from "../API/Api";
 
 
-const EDIT_TABLE = "EDIT_TABLE";
-const EDIT_TABLE_RESULT_OK = "EDIT_TABLE_RESULT_OK";
-const NAME_OK = "NAME_OK";
-const EDIT_TABLE_RESULT_OK_NULL = "EDIT_TABLE_RESULT_OK_NULL";
+const EDIT_PLAYER = "EDIT_PLAYER";
+const EDIT_TABLE_RESULT_PLAYER_OK = "EDIT_TABLE_RESULT_PLAYER_OK";
+const PLAYER_OK = "PLAYER_OK";
+const EDIT_TABLE_RESULT_PLAYER_OK_NULL = "EDIT_TABLE_RESULT_PLAYER_OK_NULL";
 
 let initialization = {
     Error: '',
@@ -13,15 +13,15 @@ let initialization = {
 
 };
 
-let EditTableReducer = (state = initialization, action) => {
+let EditPlayerReducer = (state = initialization, action) => {
     switch (action.type) {
-        case EDIT_TABLE:
+        case EDIT_PLAYER:
             return {
                 ...state,
                 Error: action.result
             };
 
-        case NAME_OK:
+        case PLAYER_OK:
             return {
 
                 ...state,
@@ -29,14 +29,14 @@ let EditTableReducer = (state = initialization, action) => {
 
             };
 
-        case EDIT_TABLE_RESULT_OK:
+        case EDIT_TABLE_RESULT_PLAYER_OK:
             return {
 
                 ...state,
                 Result: action.result
             };
 
-        case EDIT_TABLE_RESULT_OK_NULL:
+        case EDIT_TABLE_RESULT_PLAYER_OK_NULL:
             return {
 
                 ...state,
@@ -48,23 +48,41 @@ let EditTableReducer = (state = initialization, action) => {
     }
 }
 
-export let editTableForGames = (result) => ({type: EDIT_TABLE,  result});
-export let editTableForGamesResult = (result) => ({type: EDIT_TABLE_RESULT_OK,  result});
-export let editTableForGamesResultNull = (result) => ({type: EDIT_TABLE_RESULT_OK_NULL,  result});
-export let eddTablThunk = (object) => ({type: NAME_OK, object});
+export let editPlayerForGames = (result) => ({type: EDIT_PLAYER,  result});
+export let editPlayerResult = (result) => ({type: EDIT_TABLE_RESULT_PLAYER_OK,  result});
+export let editPlayerResultNull = (result) => ({type: EDIT_TABLE_RESULT_PLAYER_OK_NULL,  result});
+export let eddPlayerThunk = (object) => ({type: PLAYER_OK, object});
 
 
-export const editTableThunk = (args) =>
+export const editPlayerThunk = (args) =>
     async (dispatch) => {
 
-        let response = await editTableApiGames.editTableForApi(args);
+        let response = await editPlayer.editPlayerForApi(args);
         if (response.data.Result === "Error") {
-            dispatch(editTableForGames(response.data.Error));
-            dispatch(editTableForGamesResult(response.data.Result));
+            dispatch(editPlayerForGames(response.data.Error));
+            dispatch(editPlayerResult(response.data.Result));
         } else {
-            dispatch(editTableForGamesResult(response.data.Result));
-            dispatch(editTableForGames(''));
+            dispatch(editPlayerResult(response.data.Result));
+            dispatch(editPlayerForGames(''));
         }
     }
 
-export default EditTableReducer;
+
+
+
+
+
+
+
+
+export const editPlayerThunkByObject = (name) =>
+    async (dispatch) => {
+
+        let response = await editPlayer.getOnePlayer(name);
+        if (response.data.Result === "Ok") {
+
+            dispatch(eddPlayerThunk(response.data));
+        }
+    }
+
+export default EditPlayerReducer;

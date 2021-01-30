@@ -1,14 +1,14 @@
-import {getApiGamesDelete} from "../API/Api";
+import {getApiTournamentsGamesDel} from "../API/Api";
 
-const DEL_GAMES = "DEL_GAMES";
+const DEL_TOURNAMETS = "DEL_TOURNAMETS";
 
 let initialization = {
         Result:''
 };
 
-let DelGamesReducer = (state = initialization, action) => {
+let DelTournamentsReducer = (state = initialization, action) => {
     switch (action.type) {
-        case DEL_GAMES:
+        case DEL_TOURNAMETS:
             return {
 
                 ...state,
@@ -20,17 +20,17 @@ let DelGamesReducer = (state = initialization, action) => {
     }
 }
 
-export let delGamesForGames = (result) => ({type: DEL_GAMES, result:result});
+export let delTournamentsForGames = (result) => ({type: DEL_TOURNAMETS, result:result});
 
-export const deleteGameThunk=(name)=>
+export const deleteTournamentsThunk=(name)=>
     async (dispatch)=>{
 
-        let response = await getApiGamesDelete.delGamesForApi(name);
+        let response = await getApiTournamentsGamesDel.delTornamentsGamesForApi(name);
         if (response.data.Result === 'ok') {
 
-            dispatch(delGamesForGames(response.data.Result));
+            dispatch(delTournamentsForGames(response.data.Result));
 
         }
     }
 
-export default DelGamesReducer;
+export default DelTournamentsReducer;

@@ -1,18 +1,18 @@
-import {OfflineOrOnline} from "../API/Api";
+import {OfflineOrOnlineTournaments} from "../API/Api";
 
 
-const ONLINE_GAMES = "ONLINE_GAMES";
+const ONLINE_TOURNAMENTS = "ONLINE_TOURNAMENTS";
 
 
 let initialization = {
         Result:''
 };
 
-let OnlineGamesReducer = (state = initialization, action) => {
+let OnlineTournamentsReducer = (state = initialization, action) => {
 
     switch (action.type) {
 
-        case ONLINE_GAMES:
+        case ONLINE_TOURNAMENTS:
             return {
 
                 ...state,
@@ -23,19 +23,19 @@ let OnlineGamesReducer = (state = initialization, action) => {
     }
 }
 
-export let onlineGamesForGames = (result) => ({type: ONLINE_GAMES, result:result});
+export let onlineTournamentsForGames = (result) => ({type: ONLINE_TOURNAMENTS, result:result});
 
 
-export const onlineGameThunk=(name)=>
+export const onlineTournamentsThunk=(name)=>
     async (dispatch)=>{
 
-        let response = await OfflineOrOnline.onlineGamesForApi(name);
+        let response = await OfflineOrOnlineTournaments.onlineTournamentsForApi(name);
         if (response.data.Result === 'ok') {
-            dispatch(onlineGamesForGames(response.data.Result));
+            dispatch(onlineTournamentsForGames(response.data.Result));
         }
     }
 
 
 
 
-export default OnlineGamesReducer;
+export default OnlineTournamentsReducer;

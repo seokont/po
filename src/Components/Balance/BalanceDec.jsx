@@ -1,6 +1,7 @@
 import React from "react";
 import {Field, reduxForm, reset} from "redux-form";
 import {Button} from "@material-ui/core";
+import {authDecBalanceThunk} from "../../Reducer/balanceincdec-reducer";
 
 
 const SendMessageTable = (props) => {
@@ -10,7 +11,7 @@ const SendMessageTable = (props) => {
         <form onSubmit={props.handleSubmit}>
 
 
-            <Field name={"numberbalance"} min="0" type="number" component={"input"}/>
+            <Field name={"numberbalance"} step="any" min="0" type="number" component={"input"}/>
             <div>
 
 
@@ -31,24 +32,25 @@ const SendMessageTable = (props) => {
 }
 
 const afterSubmit = (result, dispatch) => {
-    dispatch(reset('balanceform'));
+    dispatch(reset('balanceformdec'));
 }
 
 
-let BalanceForm = reduxForm({form: 'balanceform', onSubmitSuccess: afterSubmit})(SendMessageTable);
+let BalanceForm = reduxForm({form: 'balanceformdec', onSubmitSuccess: afterSubmit})(SendMessageTable);
 
 
-const BalanceAddOrClear = (props) => {
+const BalanceAddOrClearDec = (props) => {
+
     const onSubmit = (values) => {
-        debugger
+
 for(let o=0; o<props.getplayersobj.length; o++)
 {
-    props.authIncBalanceThunk(values.numberbalance,props.getplayersobj[o]);
+    props.authDecBalanceThunk(values.numberbalance,props.getplayersobj[o]);
 }
 
 
     }
     return <BalanceForm balance={props.balance} getplayersobj={props.getplayersobj} onSubmit={onSubmit}/>
 }
-export default BalanceAddOrClear;
+export default BalanceAddOrClearDec;
 

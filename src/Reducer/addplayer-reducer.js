@@ -1,24 +1,24 @@
-import {addTableApiGames} from "../API/Api";
+import {addPlayer} from "../API/Api";
 
 
-const ADD_TABLE = "ADD_TABLE";
-const ADD_TABLE_RESULT_OK = "ADD_TABLE_RESULT_OK";
+const ADD_PLAYER = "ADD_PLAYER";
+const ADD_PLAYER_RESULT_OK = "ADD_PLAYER_RESULT_OK";
 
 let initialization = {
     Error:'',
     Result:''
 };
 
-let AddTableReducer = (state = initialization, action) => {
+let AddPlayerReducer = (state = initialization, action) => {
     switch (action.type) {
-        case ADD_TABLE:
+        case ADD_PLAYER:
             return {
 
                 ...state,
                 Error: action.result
             };
 
-        case ADD_TABLE_RESULT_OK:
+        case ADD_PLAYER_RESULT_OK:
             return {
 
                 ...state,
@@ -30,21 +30,19 @@ let AddTableReducer = (state = initialization, action) => {
     }
 }
 
-export let addTableForGames = (result) => ({type: ADD_TABLE, result:result});
-export let addTableForGamesResult = (result) => ({type: ADD_TABLE_RESULT_OK, result:result});
+export let addPlayerForGames = (result) => ({type: ADD_PLAYER, result:result});
+export let addPlayerForGamesResult = (result) => ({type: ADD_PLAYER_RESULT_OK, result:result});
 
-export const addTableThunk=(args)=>
+export const addPlayerThunk=(args)=>
     async (dispatch)=>{
-
-        let response = await addTableApiGames.addTableForApi(args);
-
+        let response = await addPlayer.addPlayerForApi(args);
         if (response.data.Result === "Error") {
-            dispatch(addTableForGames(response.data.Error));
-            dispatch(addTableForGamesResult(response.data.Result));
+            dispatch(addPlayerForGames(response.data.Error));
+            dispatch(addPlayerForGamesResult(response.data.Result));
         } else{
-            dispatch(addTableForGamesResult(response.data.Result));
-            dispatch(addTableForGames(''));
+            dispatch(addPlayerForGamesResult(response.data.Result));
+            dispatch(addPlayerForGames(''));
         }
     }
 
-export default AddTableReducer;
+export default AddPlayerReducer;

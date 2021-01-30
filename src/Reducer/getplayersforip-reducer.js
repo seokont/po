@@ -1,25 +1,29 @@
-import {getApiPlayers, playerSession} from "../API/Api";
+import {getipplayer} from "../API/Api";
 
 
-const GET_PLAYERS = "GET_PLAYERS";
+const GET_PLAYERS_IP = "GET_PLAYERS_IP";
 const GET_RESULT_PLAYERS_FOR_LOADER = "GET_RESULT_PLAYERS_FOR_LOADER";
-const GET_OBJECT = "GET_OBJECT";
-const GET_OBJECT_SESSION = "GET_OBJECT_SESSION";
+
 
 let initialization = {
-    AllPlayers: [],
+    SessionID: [],
+    Player: [],
+    PC: [],
+    IP: [],
     Result: '',
-    Obj:[],
-    ObjectSession:[]
+
 };
 
-let GetPlayersReducer = (state = initialization, action) => {
+let GetPlayersForIpReducer = (state = initialization, action) => {
 
     switch (action.type) {
-        case GET_PLAYERS:
+        case GET_PLAYERS_IP:
             return {
                 ...state,
-                AllPlayers: [...action.data]
+                SessionID: [...action.data.SessionID],
+                Player: [...action.data.Player],
+                PC: [...action.data.PC],
+                IP: [...action.data.IP],
             };
         case GET_RESULT_PLAYERS_FOR_LOADER:
             return {
@@ -27,46 +31,25 @@ let GetPlayersReducer = (state = initialization, action) => {
                 Result: action.result
             };
 
-        case GET_OBJECT:
-            return {
-                ...state,
-                // Obj: [...state.Obj, action.obj]
-                Obj: [...action.obj]
-            };
-            case GET_OBJECT_SESSION:
-            return {
-                ...state,
 
-                ObjectSession: [...state.ObjectSession, action.obj]
-            };
         default:
             return state;
     }
 }
-export let getPlayersForAll = (data) => ({type: GET_PLAYERS, data});
-export let getGamesForAllLoaderPlayers = (result) => ({type: GET_RESULT_PLAYERS_FOR_LOADER, result});
-export let getObj = (obj) => ({type: GET_OBJECT, obj});
-export let getObjSession = (obj) => ({type: GET_OBJECT_SESSION, obj});
+export let getPlayersForIpAll = (data) => ({type: GET_PLAYERS_IP, data});
+export let getGamesForAllLoaderPlayersIp = (result) => ({type: GET_RESULT_PLAYERS_FOR_LOADER, result});
 
-export const authPlayersThunk = () =>
+
+export const authPlayersIpThunk = () =>
     async (dispatch) => {
-        let response = await getApiPlayers.getPlayersForApi();
+        let response = await getipplayer.getipplayers();
         if (response.status === 200) {
-            dispatch(getPlayersForAll(response.data));
-            dispatch(getGamesForAllLoaderPlayers(response.data.Result));
+            dispatch(getPlayersForIpAll(response.data));
+            dispatch(getGamesForAllLoaderPlayersIp(response.data.Result));
         }
     }
 
-export const authSessionThunk = (session) =>
-    async (dispatch) => {
-
-        let response = await playerSession.sessionPlayerForApi(session);
-        if (response.status === 200) {
-            dispatch(getObjSession(response.data));
-
-        }
-        debugger
-    }
 
 
-export default GetPlayersReducer;
+
+export default GetPlayersForIpReducer;

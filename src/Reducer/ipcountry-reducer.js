@@ -1,21 +1,21 @@
-import {addPlayer} from "../API/Api";
+import {ippl} from "../API/Api";
 
 
-const ADD_PLAYER = "ADD_PLAYER";
+const ADD_IMAGE_COUNTRY = "ADD_IMAGE_COUNTRY";
 const ADD_PLAYER_RESULT_OK = "ADD_PLAYER_RESULT_OK";
 
 let initialization = {
-    Error:'',
-    Result:''
+    ImgeGeo: [],
+    Result: ''
 };
 
-let AddPlayerReducer = (state = initialization, action) => {
+let IpCountryReducer = (state = initialization, action) => {
     switch (action.type) {
-        case ADD_PLAYER:
+        case ADD_IMAGE_COUNTRY:
             return {
 
                 ...state,
-                Error: action.result
+                ImgeGeo: [...state.ImgeGeo, action.result]
             };
 
         case ADD_PLAYER_RESULT_OK:
@@ -30,19 +30,18 @@ let AddPlayerReducer = (state = initialization, action) => {
     }
 }
 
-export let addPlayerForGames = (result) => ({type: ADD_PLAYER, result:result});
-export let addPlayerForGamesResult = (result) => ({type: ADD_PLAYER_RESULT_OK, result:result});
+export let addPlayerImageCountry = (result) => ({type: ADD_IMAGE_COUNTRY, result: result});
 
-export const addPlayerThunk=(args)=>
-    async (dispatch)=>{
-        let response = await addPlayer.addPlayerForApi(args);
+
+export const addImageCountryThunk = (ip) =>
+
+    async (dispatch) => {
+
+        let response = await ippl.ipfunction(ip);
         if (response.data.Result === "Error") {
-            dispatch(addPlayerForGames(response.data.Error));
-            dispatch(addPlayerForGamesResult(response.data.Result));
-        } else{
-            dispatch(addPlayerForGamesResult(response.data.Result));
-            dispatch(addPlayerForGames(''));
+            dispatch(addPlayerImageCountry(response.data));
+
         }
     }
 
-export default AddPlayerReducer;
+export default IpCountryReducer;

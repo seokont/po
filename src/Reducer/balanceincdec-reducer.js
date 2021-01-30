@@ -1,43 +1,59 @@
-import {getApiPlayers} from "../API/Api";
+import {playerBalance} from "../API/Api";
 
 
-const GET_PLAYERS = "GET_PLAYERS";
+const BALANCE_PLAYERS_INC = "BALANCE_PLAYERS_INC";
+const BALANCE_PLAYERS_DEC = "BALANCE_PLAYERS_DEC";
 const GET_RESULT_PLAYERS_FOR_LOADER = "GET_RESULT_PLAYERS_FOR_LOADER";
 
 let initialization = {
-    AllPlayers: [],
-    Result: ''
+
+    ResultInc: '',
+    ResultDec: '',
+    Result:''
 };
 
-let GetPlayersReducer = (state = initialization, action) => {
+let BalanceReducer = (state = initialization, action) => {
 
     switch (action.type) {
-        case GET_PLAYERS:
+        case BALANCE_PLAYERS_INC:
             return {
                 ...state,
-                AllPlayers: [...action.data]
+                ResultInc: action.data
             };
-        case GET_RESULT_PLAYERS_FOR_LOADER:
+
+            case BALANCE_PLAYERS_DEC:
             return {
                 ...state,
-                Result: action.result
+                ResultDec: action.data
             };
+
         default:
             return state;
     }
 }
-export let getPlayersForAll = (data) => ({type: GET_PLAYERS, data});
-export let getGamesForAllLoaderPlayers = (result) => ({type: GET_RESULT_PLAYERS_FOR_LOADER, result});
+export let getIncBalance = (data) => ({type: BALANCE_PLAYERS_INC, data});
+export let getDecBalance = (data) => ({type: BALANCE_PLAYERS_DEC, data});
 
-export const authPlayersThunk = () =>
+
+export const authIncBalanceThunk = (summa,player) =>
     async (dispatch) => {
 
-        let response = await getApiPlayers.getPlayersForApi();
+        let response = await playerBalance.incrementBalance(summa,player);
         if (response.status === 200) {
-            dispatch(getPlayersForAll(response.data));
-            dispatch(getGamesForAllLoaderPlayers(response.data.Result));
+            dispatch(getIncBalance(response.data));
+
+        }
+    }
+
+export const authDecBalanceThunk = (summa,player) =>
+    async (dispatch) => {
+
+        let response = await playerBalance.decrementBalance(summa,player);
+        if (response.status === 200) {
+            dispatch(getDecBalance(response.data));
+
         }
     }
 
 
-export default GetPlayersReducer;
+export default BalanceReducer;

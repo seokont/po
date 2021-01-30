@@ -1,22 +1,29 @@
-import {getApiGames} from "../API/Api";
+import { getApiTournamentsGames} from "../API/Api";
 
-const GET_GAMES = "GET_GAMES";
-const GET_RESULT_FOR_LOADER = "GET_RESULT_FOR_LOADER";
+const GET_GAMES_TOURNAMENTS = "GET_GAMES_TOURNAMENTS";
+const GET_RESULT_FOR_LOADER_TOURNAMENTS = "GET_RESULT_FOR_LOADER_TOURNAMENTS";
+const GET_TOURN_OBJECT = "GET_TOURN_OBJECT";
 
 let initialization = {
-    AllRingGames: [],
-    Result:''
+    AllRingGamesTournaments: [],
+    Result:'',
+    TournObj:[]
 };
 
-let GetGamesReducer = (state = initialization, action) => {
+let GetTournamentsGamesReducer = (state = initialization, action) => {
 
     switch (action.type) {
-        case GET_GAMES:
+        case GET_GAMES_TOURNAMENTS:
             return {
                 ...state,
-                AllRingGames: [...action.data]
+                AllRingGamesTournaments: [...action.data]
             };
-        case GET_RESULT_FOR_LOADER:
+            case GET_TOURN_OBJECT:
+            return {
+                ...state,
+                TournObj: [...action.obj]
+            };
+        case GET_RESULT_FOR_LOADER_TOURNAMENTS:
             return {
                 ...state,
                 Result: action.result
@@ -26,17 +33,18 @@ let GetGamesReducer = (state = initialization, action) => {
             return state;
     }
 }
-export let getGamesForAll = (data) => ({type: GET_GAMES,  data});
-export let getGamesForAllLoader = (result) => ({type: GET_RESULT_FOR_LOADER, result});
+export let getGamesTournamentsForAll = (data) => ({type: GET_GAMES_TOURNAMENTS,  data});
+export let getGamesForTournamentsAllLoader = (result) => ({type: GET_RESULT_FOR_LOADER_TOURNAMENTS, result});
+export let getTournamentsObj = (obj) => ({type: GET_TOURN_OBJECT, obj});
 
-export const authThunk = () =>
+export const authTournamentsThunk = () =>
     async (dispatch) => {
-        let response = await getApiGames.getGamesForApi();
+        let response = await getApiTournamentsGames.getTornamentsGamesForApi();
         if (response.status === 200) {
-            dispatch(getGamesForAll(response.data));
-            dispatch(getGamesForAllLoader(response.data.Result));
+            dispatch(getGamesTournamentsForAll(response.data));
+            dispatch(getGamesForTournamentsAllLoader(response.data.Result));
         }
     }
 
 
-export default GetGamesReducer;
+export default GetTournamentsGamesReducer;

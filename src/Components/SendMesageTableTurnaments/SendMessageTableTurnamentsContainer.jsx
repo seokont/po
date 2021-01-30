@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 
 import MessageforTable from "./SendMessageTableTurnaments";
 
-import {addMessageTableTournamentsThunk} from "../Reducer/messagetableturnaments-reducer";
+import {addMessageTableTournamentsThunk} from "../../Reducer/messagetableturnaments-reducer";
 
 
 

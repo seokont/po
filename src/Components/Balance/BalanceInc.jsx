@@ -10,7 +10,7 @@ const SendMessageTable = (props) => {
         <form onSubmit={props.handleSubmit}>
 
 
-            <Field name={"numberbalance"} min="0" type="number" component={"input"}/>
+            <Field name={"numberbalance"} step="any" min="0" type="number" component={"input"}/>
             <div>
 
 
@@ -31,16 +31,16 @@ const SendMessageTable = (props) => {
 }
 
 const afterSubmit = (result, dispatch) => {
-    dispatch(reset('balanceform'));
+    dispatch(reset('balanceforminc'));
 }
 
 
-let BalanceForm = reduxForm({form: 'balanceform', onSubmitSuccess: afterSubmit})(SendMessageTable);
+let BalanceForm = reduxForm({form: 'balanceforminc', onSubmitSuccess: afterSubmit})(SendMessageTable);
 
 
-const BalanceAddOrClear = (props) => {
+const BalanceAddOrClearInc = (props) => {
     const onSubmit = (values) => {
-        debugger
+        
 for(let o=0; o<props.getplayersobj.length; o++)
 {
     props.authIncBalanceThunk(values.numberbalance,props.getplayersobj[o]);
@@ -50,5 +50,5 @@ for(let o=0; o<props.getplayersobj.length; o++)
     }
     return <BalanceForm balance={props.balance} getplayersobj={props.getplayersobj} onSubmit={onSubmit}/>
 }
-export default BalanceAddOrClear;
+export default BalanceAddOrClearInc;
 

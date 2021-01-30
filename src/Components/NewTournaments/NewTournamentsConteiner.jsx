@@ -1,17 +1,16 @@
 import React from "react";
-import {addTableThunk} from "../../Reducer/addtable-reducer";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import AddTable from "./NewRingGame";
-
-
-
+import AddTournaments from "./NewTournaments";
+import {addTurnamentsThunk, mixedThunk} from "../../Reducer/addtabletournaments-reducer";
+import AuthRedirectNoneToken from "./../../Hoc/AuthRedirectNoneToken";
 
 
 let mapStateToProps = (state) => ({
-adtablenew:state.Addtablereducer
+adturnamentsnew:state.Addturnaments,
+token: state.Token
 
 })
 
-let NewRingGameConteiner = compose(connect(mapStateToProps, {addTableThunk}))(AddTable);
-export default NewRingGameConteiner;
+let NewTournamentsConteiner = compose(connect(mapStateToProps, {addTurnamentsThunk,mixedThunk}),AuthRedirectNoneToken)(AddTournaments);
+export default NewTournamentsConteiner;

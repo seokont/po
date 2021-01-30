@@ -1,24 +1,43 @@
-import {addTableApiGames} from "../API/Api";
+import {editTableApiGames, getOneGames} from "../API/Api";
 
 
-const ADD_TABLE = "ADD_TABLE";
-const ADD_TABLE_RESULT_OK = "ADD_TABLE_RESULT_OK";
+
+const EDIT_TABLE = "EDIT_TABLE";
+const EDIT_TABLE_RESULT_OK = "EDIT_TABLE_RESULT_OK";
+const NAME_OK = "NAME_OK";
+const EDIT_TABLE_RESULT_OK_NULL = "EDIT_TABLE_RESULT_OK_NULL";
 
 let initialization = {
-    Error:'',
-    Result:''
+    Error: '',
+    Object: {},
+    Result: ''
+
 };
 
-let AddTableReducer = (state = initialization, action) => {
+let EditTableReducer = (state = initialization, action) => {
     switch (action.type) {
-        case ADD_TABLE:
+        case EDIT_TABLE:
             return {
-
                 ...state,
                 Error: action.result
             };
 
-        case ADD_TABLE_RESULT_OK:
+        case NAME_OK:
+            return {
+
+                ...state,
+                Object: action.object,
+
+            };
+
+        case EDIT_TABLE_RESULT_OK:
+            return {
+
+                ...state,
+                Result: action.result
+            };
+
+        case EDIT_TABLE_RESULT_OK_NULL:
             return {
 
                 ...state,
@@ -30,21 +49,34 @@ let AddTableReducer = (state = initialization, action) => {
     }
 }
 
-export let addTableForGames = (result) => ({type: ADD_TABLE, result:result});
-export let addTableForGamesResult = (result) => ({type: ADD_TABLE_RESULT_OK, result:result});
+export let editTableForGames = (result) => ({type: EDIT_TABLE, result});
+export let editTableForGamesResult = (result) => ({type: EDIT_TABLE_RESULT_OK, result});
+export let editTableForGamesResultNull = (result) => ({type: EDIT_TABLE_RESULT_OK_NULL, result});
+export let eddTablThunk = (object) => ({type: NAME_OK, object});
 
-export const addTableThunk=(args)=>
-    async (dispatch)=>{
 
-        let response = await addTableApiGames.addTableForApi(args);
+export const editTableThunk = (args) =>
+    async (dispatch) => {
 
+        let response = await editTableApiGames.editTableForApi(args);
         if (response.data.Result === "Error") {
-            dispatch(addTableForGames(response.data.Error));
-            dispatch(addTableForGamesResult(response.data.Result));
-        } else{
-            dispatch(addTableForGamesResult(response.data.Result));
-            dispatch(addTableForGames(''));
+            dispatch(editTableForGames(response.data.Error));
+            dispatch(editTableForGamesResult(response.data.Result));
+        } else {
+            dispatch(editTableForGamesResult(response.data.Result));
+            dispatch(editTableForGames(''));
         }
     }
 
-export default AddTableReducer;
+export const getGameOneThunk = (name) =>
+    async (dispatch) => {
+
+        let response = await getOneGames.getGamesOneApi(name);
+        if (response.status === 200) {
+            dispatch(eddTablThunk(response.data));
+
+        }
+    }
+
+
+export default EditTableReducer;

@@ -1,48 +1,72 @@
-import {addPlayer} from "../API/Api";
+import {conPlayer} from "../API/Api";
 
 
-const ADD_PLAYER = "ADD_PLAYER";
-const ADD_PLAYER_RESULT_OK = "ADD_PLAYER_RESULT_OK";
+const CON_PLAYER = "CON_PLAYER";
+
 
 let initialization = {
-    Error:'',
-    Result:''
+    Allconected:{
+        Result:'',
+        Connections:'',
+        SessionID:[],
+        Status:[],
+        Lang:[],
+        PC:[],
+        IP:[],
+        Proxy:[],
+        Connect:[],
+        Login:[],
+        LastAction:[],
+        PacketsIn:[],
+        PacketsOut:[]
+
+    },
+
 };
 
-let AddPlayerReducer = (state = initialization, action) => {
+let ConectedPlayersReducer = (state = initialization, action) => {
     switch (action.type) {
-        case ADD_PLAYER:
+        case CON_PLAYER:
             return {
 
                 ...state,
-                Error: action.result
+                Allconected: {
+                    Result:action.resultconected.Result,
+                    Connections:action.resultconected.Connections,
+                    Player:[...action.resultconected.Player],
+                    SessionID:[...action.resultconected.SessionID],
+                    Status:[...action.resultconected.Status],
+                    Lang:[...action.resultconected.Lang],
+                    PC:[...action.resultconected.PC],
+                    IP:[...action.resultconected.IP],
+                    Proxy:[...action.resultconected.Proxy],
+                    Connect:[...action.resultconected.Connect],
+                    Login:[...action.resultconected.Login],
+                    LastAction:[...action.resultconected.LastAction],
+                    PacketsIn:[...action.resultconected.PacketsIn],
+                    PacketsOut:[...action.resultconected.PacketsOut]
+
+                }
             };
 
-        case ADD_PLAYER_RESULT_OK:
-            return {
 
-                ...state,
-                Result: action.result
-            };
 
         default:
             return state;
     }
 }
 
-export let addPlayerForGames = (result) => ({type: ADD_PLAYER, result:result});
-export let addPlayerForGamesResult = (result) => ({type: ADD_PLAYER_RESULT_OK, result:result});
+export let conPlayerForGames = (resultconected) => ({type: CON_PLAYER, resultconected:resultconected});
 
-export const addPlayerThunk=(args)=>
+
+export const conectedPlayersThunk=()=>
     async (dispatch)=>{
-        let response = await addPlayer.addPlayerForApi(args);
-        if (response.data.Result === "Error") {
-            dispatch(addPlayerForGames(response.data.Error));
-            dispatch(addPlayerForGamesResult(response.data.Result));
-        } else{
-            dispatch(addPlayerForGamesResult(response.data.Result));
-            dispatch(addPlayerForGames(''));
+
+        let response = await conPlayer.conPlayerForApi();
+        if (response.data.Result === "Ok") {
+            dispatch(conPlayerForGames(response.data));
+
         }
     }
 
-export default AddPlayerReducer;
+export default ConectedPlayersReducer;

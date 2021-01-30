@@ -1,50 +1,47 @@
-import {addTableApiGames} from "../API/Api";
+import {textMessageTables} from "../API/Api";
 
 
-const ADD_TABLE = "ADD_TABLE";
-const ADD_TABLE_RESULT_OK = "ADD_TABLE_RESULT_OK";
+const MESSAGE_TABLE_NAME = "MESSAGE_TABLE_NAME";
+const MESSAGE_TABLE = "MESSAGE_TABLE";
+
 
 let initialization = {
-    Error:'',
-    Result:''
+
+    Result:'',
+    MessageName:''
 };
 
-let AddTableReducer = (state = initialization, action) => {
+let AddMessageTableReducer = (state = initialization, action) => {
     switch (action.type) {
-        case ADD_TABLE:
+        case MESSAGE_TABLE:
             return {
-
-                ...state,
-                Error: action.result
-            };
-
-        case ADD_TABLE_RESULT_OK:
-            return {
-
                 ...state,
                 Result: action.result
             };
+            case MESSAGE_TABLE_NAME:
+            return {
+                ...state,
+                MessageName: action.name
+            };
+
 
         default:
             return state;
     }
 }
 
-export let addTableForGames = (result) => ({type: ADD_TABLE, result:result});
-export let addTableForGamesResult = (result) => ({type: ADD_TABLE_RESULT_OK, result:result});
+export let addMessageForTable = (result) => ({type: MESSAGE_TABLE, result});
+export let addMessageForTableName = (name) => ({type: MESSAGE_TABLE_NAME, name});
 
-export const addTableThunk=(args)=>
+
+export const addMessageTableThunk=(name,message)=>
     async (dispatch)=>{
 
-        let response = await addTableApiGames.addTableForApi(args);
+        let response = await textMessageTables.messageTextGamesForApi(name,message);
+        if (response.data.Result === "ok") {
+            dispatch(addMessageForTable(response.data.Result));
 
-        if (response.data.Result === "Error") {
-            dispatch(addTableForGames(response.data.Error));
-            dispatch(addTableForGamesResult(response.data.Result));
-        } else{
-            dispatch(addTableForGamesResult(response.data.Result));
-            dispatch(addTableForGames(''));
         }
     }
 
-export default AddTableReducer;
+export default AddMessageTableReducer;

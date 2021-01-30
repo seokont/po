@@ -1,42 +1,72 @@
-import {getApiGames} from "../API/Api";
+import {getApiPlayers, playerSession} from "../API/Api";
 
-const GET_GAMES = "GET_GAMES";
-const GET_RESULT_FOR_LOADER = "GET_RESULT_FOR_LOADER";
+
+const GET_PLAYERS = "GET_PLAYERS";
+const GET_RESULT_PLAYERS_FOR_LOADER = "GET_RESULT_PLAYERS_FOR_LOADER";
+const GET_OBJECT = "GET_OBJECT";
+const GET_OBJECT_SESSION = "GET_OBJECT_SESSION";
 
 let initialization = {
-    AllRingGames: [],
-    Result:''
+    AllPlayers: [],
+    Result: '',
+    Obj:[],
+    ObjectSession:[]
 };
 
-let GetGamesReducer = (state = initialization, action) => {
+let GetPlayersReducer = (state = initialization, action) => {
 
     switch (action.type) {
-        case GET_GAMES:
+        case GET_PLAYERS:
             return {
                 ...state,
-                AllRingGames: [...action.data]
+                AllPlayers: [...action.data]
             };
-        case GET_RESULT_FOR_LOADER:
+        case GET_RESULT_PLAYERS_FOR_LOADER:
             return {
                 ...state,
                 Result: action.result
             };
 
+        case GET_OBJECT:
+            return {
+                ...state,
+                // Obj: [...state.Obj, action.obj]
+                Obj: [...action.obj]
+            };
+            case GET_OBJECT_SESSION:
+            return {
+                ...state,
+
+                ObjectSession: [...state.ObjectSession, action.obj]
+            };
         default:
             return state;
     }
 }
-export let getGamesForAll = (data) => ({type: GET_GAMES,  data});
-export let getGamesForAllLoader = (result) => ({type: GET_RESULT_FOR_LOADER, result});
+export let getPlayersForAll = (data) => ({type: GET_PLAYERS, data});
+export let getGamesForAllLoaderPlayers = (result) => ({type: GET_RESULT_PLAYERS_FOR_LOADER, result});
+export let getObj = (obj) => ({type: GET_OBJECT, obj});
+export let getObjSession = (obj) => ({type: GET_OBJECT_SESSION, obj});
 
-export const authThunk = () =>
+export const authPlayersThunk = () =>
     async (dispatch) => {
-        let response = await getApiGames.getGamesForApi();
+        let response = await getApiPlayers.getPlayersForApi();
         if (response.status === 200) {
-            dispatch(getGamesForAll(response.data));
-            dispatch(getGamesForAllLoader(response.data.Result));
+            dispatch(getPlayersForAll(response.data));
+            dispatch(getGamesForAllLoaderPlayers(response.data.Result));
         }
     }
 
+export const authSessionThunk = (session) =>
+    async (dispatch) => {
 
-export default GetGamesReducer;
+        let response = await playerSession.sessionPlayerForApi(session);
+        if (response.status === 200) {
+            dispatch(getObjSession(response.data));
+
+        }
+        debugger
+    }
+
+
+export default GetPlayersReducer;

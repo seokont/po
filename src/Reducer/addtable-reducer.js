@@ -1,36 +1,59 @@
-import {getApiGamesDelete} from "../API/Api";
+import {addTableApiGames} from "../API/Api";
 
-const DEL_GAMES = "DEL_GAMES";
+
+const ADD_TABLE = "ADD_TABLE";
+const ADD_TABLE_RESULT_OK = "ADD_TABLE_RESULT_OK";
+const MIXED_ADD_RINGGAMES = "MIXED_ADD_RINGGAMES";
 
 let initialization = {
-        Result:''
+    Error:'',
+    Result:'',
+    MixedRing:''
 };
 
-let DelGamesReducer = (state = initialization, action) => {
+let AddTableReducer = (state = initialization, action) => {
     switch (action.type) {
-        case DEL_GAMES:
+        case ADD_TABLE:
+            return {
+
+                ...state,
+                Error: action.result
+            };
+
+        case ADD_TABLE_RESULT_OK:
             return {
 
                 ...state,
                 Result: action.result
             };
+        case MIXED_ADD_RINGGAMES:
+            return {
+                ...state,
+                MixedRing: action.value
+            };
+
 
         default:
             return state;
     }
 }
 
-export let delGamesForGames = (result) => ({type: DEL_GAMES, result:result});
+export let addTableForGames = (result) => ({type: ADD_TABLE, result:result});
+export let addTableForGamesResult = (result) => ({type: ADD_TABLE_RESULT_OK, result:result});
+export let mixedRingGamesThunk = (value) => ({type: MIXED_ADD_RINGGAMES, value});
 
-export const deleteGameThunk=(name)=>
+export const addTableThunk=(args)=>
     async (dispatch)=>{
 
-        let response = await getApiGamesDelete.delGamesForApi(name);
-        if (response.data.Result === 'ok') {
+        let response = await addTableApiGames.addTableForApi(args);
 
-            dispatch(delGamesForGames(response.data.Result));
-
+        if (response.data.Result === "Error") {
+            dispatch(addTableForGames(response.data.Error));
+            dispatch(addTableForGamesResult(response.data.Result));
+        } else{
+            dispatch(addTableForGamesResult(response.data.Result));
+            dispatch(addTableForGames(''));
         }
     }
 
-export default DelGamesReducer;
+export default AddTableReducer;

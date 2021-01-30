@@ -1,14 +1,15 @@
-import {getApiGamesDelete} from "../API/Api";
+import {playerDel} from "../API/Api";
 
-const DEL_GAMES = "DEL_GAMES";
+
+const DEL_PLAYER = "DEL_PLAYER";
 
 let initialization = {
         Result:''
 };
 
-let DelGamesReducer = (state = initialization, action) => {
+let DelPlayerReducer = (state = initialization, action) => {
     switch (action.type) {
-        case DEL_GAMES:
+        case DEL_PLAYER:
             return {
 
                 ...state,
@@ -20,17 +21,17 @@ let DelGamesReducer = (state = initialization, action) => {
     }
 }
 
-export let delGamesForGames = (result) => ({type: DEL_GAMES, result:result});
+export let delPlayerGames = (result) => ({type: DEL_PLAYER, result:result});
 
-export const deleteGameThunk=(name)=>
+export const deletePlayerThunk=(name)=>
     async (dispatch)=>{
 
-        let response = await getApiGamesDelete.delGamesForApi(name);
+        let response = await playerDel.delPlayerForApi(name);
         if (response.data.Result === 'ok') {
 
-            dispatch(delGamesForGames(response.data.Result));
+            dispatch(delPlayerGames(response.data.Result));
 
         }
     }
 
-export default DelGamesReducer;
+export default DelPlayerReducer;

@@ -1,36 +1,52 @@
-import {getApiTournamentsGamesDel} from "../API/Api";
+import {resetallrake, resetuserrake} from "../API/Api";
 
-const DEL_TOURNAMETS = "DEL_TOURNAMETS";
+
+const RESET_RAKE_USER = "RESET_RAKE_USER";
+const RESET_RAKE_ALL = "RESET_RAKE_ALL";
 
 let initialization = {
-        Result:''
+    Result: '',
+    ResultOk: '',
 };
 
-let DelTournamentsReducer = (state = initialization, action) => {
+let ResetRakeAllReducer = (state = initialization, action) => {
     switch (action.type) {
-        case DEL_TOURNAMETS:
+        case RESET_RAKE_ALL:
             return {
-
                 ...state,
                 Result: action.result
             };
-
+            case RESET_RAKE_USER:
+            return {
+                ...state,
+                ResultOk: action.result
+            };
         default:
             return state;
     }
 }
 
-export let delTournamentsForGames = (result) => ({type: DEL_TOURNAMETS, result:result});
+export let resetRakeAllForGames = (result) => ({type: RESET_RAKE_ALL, result: result});
+export let resetResultRakeOk = (result) => ({type: RESET_RAKE_ALL, result: result});
+export let resetResultRakeUserOk = (result) => ({type: RESET_RAKE_USER, result: result});
 
-export const deleteTournamentsThunk=(name)=>
-    async (dispatch)=>{
+export const resetRakeAllThunk = () =>
+    async (dispatch) => {
 
-        let response = await getApiTournamentsGamesDel.delTornamentsGamesForApi(name);
-        if (response.data.Result === 'ok') {
-
-            dispatch(delTournamentsForGames(response.data.Result));
-
+        let response = await resetallrake.resetallrakeForApi();
+        if (response.data === 'ok') {
+            dispatch(resetRakeAllForGames(response.data));
         }
     }
 
-export default DelTournamentsReducer;
+
+export const resetRakeUserThunk = (name) =>
+    async (dispatch) => {
+        let response = await resetuserrake.resetuserrakeForApi(name);
+        if (response.data.Result === 'Ok') {
+            dispatch(resetResultRakeUserOk(response.data.Result));
+        }
+    }
+
+
+export default ResetRakeAllReducer;

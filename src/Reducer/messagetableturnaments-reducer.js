@@ -1,39 +1,46 @@
-import {textMessageTables} from "../API/Api";
+import {textMessageTablesTurnaments} from "../API/Api";
 
 
-const MESSAGE_TABLE = "MESSAGE_TABLE";
+const MESSAGE_TABLE_TURNAMENTS = "MESSAGE_TABLE_TURNAMENTS";
+const MESSAGE_TABLE_TURNAMENTS_NAME = "MESSAGE_TABLE_TURNAMENTS_NAME";
 
 
 let initialization = {
 
-    Result:''
+    Result: '',
+    TournametsName:''
 };
 
-let AddMessageTableReducer = (state = initialization, action) => {
+let AddMessageTableTurnamentsReducer = (state = initialization, action) => {
     switch (action.type) {
-        case MESSAGE_TABLE:
+        case MESSAGE_TABLE_TURNAMENTS:
             return {
                 ...state,
                 Result: action.result
             };
-
+        case MESSAGE_TABLE_TURNAMENTS_NAME:
+            return {
+                ...state,
+                TournametsName: action.name
+            };
 
         default:
             return state;
     }
 }
 
-export let addMessageForTable = (result) => ({type: MESSAGE_TABLE, result:result});
+export let addMessageForTableTurnaments = (result) => ({type: MESSAGE_TABLE_TURNAMENTS,  result});
+export let addMessageForTableTurnamentsName = (name) => ({type: MESSAGE_TABLE_TURNAMENTS_NAME, name});
 
 
-export const addMessageTableThunk=(name,message)=>
-    async (dispatch)=>{
-debugger
-        let response = await textMessageTables.messageTextGamesForApi(name,message);
+export const addMessageTableTournamentsThunk = (name, message) =>
+    async (dispatch) => {
+
+        let response = await textMessageTablesTurnaments.messageTextTurnamentsForApi(name, message);
         if (response.data.Result === "ok") {
-            dispatch(addMessageForTable(response.data.Result));
+            dispatch(addMessageForTableTurnaments(response.data.Result));
 
         }
     }
 
-export default AddMessageTableReducer;
+export default AddMessageTableTurnamentsReducer;

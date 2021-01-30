@@ -5,7 +5,7 @@ const GET_RESULT_FOR_LOADER = "GET_RESULT_FOR_LOADER";
 const GET_GAME_OBJECT = "GET_GAME_OBJECT";
 
 let initialization = {
-    AllRingGames: [],
+    Conection: [],
     Result:'',
     GameObj:[]
 };
