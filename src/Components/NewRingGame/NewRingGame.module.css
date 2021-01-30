@@ -1,0 +1,21 @@
+import React from "react";
+
+
+
+
+
+const NewRingGame=()=>{
+
+
+    return(
+        <table >
+            <tbody>
+fdfdfdfdfd
+            </tbody>
+        </table>
+    )
+
+}
+
+
+export default NewRingGame;
